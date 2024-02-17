@@ -22,6 +22,8 @@ const Search: FC = () => {
   return (
     <Box>
       <Grid
+        border="1px solid #D9DEE9"
+        padding="20px"
         marginY="20px"
         alignItems="center"
         justifyContent="space-around"
