@@ -1,6 +1,6 @@
 import useUserStore from "./store/useUserStore.ts";
 import { deleteCookie, setCookie } from "@/utils/cookie.ts";
-import { ACCESS_TOKEN } from "@/constant.ts";
+import { ACCESS_TOKEN } from "@/utils/constant.ts";
 
 const useAuth = () => {
   const [isSignIn, setIsSignIn] = useUserStore(({ isSignIn, setIsSignIn }) => [
