@@ -32,7 +32,6 @@ const Search: FC = () => {
       >
         <GridItem>
           <CheckboxGroup>
-            참석구분
             <Checkbox>전체</Checkbox>
             <Checkbox>참석</Checkbox>
             <Checkbox>불참석</Checkbox>
@@ -64,14 +63,14 @@ const Search: FC = () => {
               <Th>No.</Th>
               <Th>
                 <Select backgroundColor="#ffffff">
-                  <option>AAA</option>
-                  <option>BBB</option>
+                  <option>참석</option>
+                  <option>불참</option>
                 </Select>
               </Th>
               <Th>
                 <Select backgroundColor="#ffffff">
-                  <option>AAA</option>
-                  <option>BBB</option>
+                  <option>등록</option>
+                  <option>미등록</option>
                 </Select>
               </Th>
               <Th>등록형태</Th>
