@@ -10,15 +10,22 @@ import {
 } from "@chakra-ui/react";
 import useUserStore from "@/hooks/store/useUserStore.ts";
 import { Link } from "react-router-dom";
-import { SIGN_ROUTES } from "@/utils/constant.ts";
+import { ACCESS_TOKEN, SIGN_ROUTES } from "@/utils/constant.ts";
+import { deleteCookie } from "@/utils/cookie.ts";
 
 const AsideLayout: FC<PropsWithChildren> = ({ children }) => {
   const setIsSignIn = useUserStore(({ setIsSignIn }) => setIsSignIn);
   const [selectedOption, setSelectedOption] = useState<string>("");
 
+  const handleClickSignOut = () => {
+    setIsSignIn(false);
+    deleteCookie(ACCESS_TOKEN);
+  };
+
   return (
     <Flex height="100%">
       <Box
+        flexShrink="0"
         width="150px"
         padding="20px"
         height="100%"
@@ -26,8 +33,8 @@ const AsideLayout: FC<PropsWithChildren> = ({ children }) => {
         as="aside"
       >
         <List color="#ffffff">
-          {SIGN_ROUTES.map(({ path, name }) => (
-            <ListItem paddingY="10px">
+          {SIGN_ROUTES.map(({ path, name }, index) => (
+            <ListItem key={index} paddingY="10px">
               <Link to={path}>{name}</Link>
             </ListItem>
           ))}
@@ -58,7 +65,7 @@ const AsideLayout: FC<PropsWithChildren> = ({ children }) => {
             </Select>
           </Flex>
           <Flex>
-            <Button onClick={() => setIsSignIn(false)}>로그아웃</Button>
+            <Button onClick={handleClickSignOut}>로그아웃</Button>
           </Flex>
         </Flex>
 

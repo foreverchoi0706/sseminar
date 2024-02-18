@@ -57,8 +57,8 @@ const Overview: FC = () => {
               templateColumns="repeat(3, 1fr)"
               gap={6}
             >
-              {new Array(5).fill("").map(() => (
-                <GridItem>
+              {new Array(5).fill("").map((_, index) => (
+                <GridItem key={index}>
                   <Line
                     options={{
                       responsive: true,

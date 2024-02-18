@@ -5,12 +5,14 @@ import {
   withDefaultProps,
 } from "@chakra-ui/react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { type FC, useEffect } from "react";
+import { type FC } from "react";
 import SignIn from "@/pages/signIn";
 import AsideLayout from "@/components/AsideLayout.tsx";
 import useUserStore from "@/hooks/store/useUserStore.ts";
 import { SIGN_ROUTES } from "@/utils/constant.ts";
 import "@/global.css";
+import { getAuth } from "@/utils/apis.ts";
+import useFetch from "@/hooks/useFetch.ts";
 
 const theme = extendTheme(
   withDefaultProps({
@@ -25,10 +27,13 @@ const App: FC = () => {
     ({ isSignIn, setIsSignIn }) => ({ isSignIn, setIsSignIn }),
   );
 
-  useEffect(() => {
-    setIsSignIn(true);
-  }, []);
+  const { isLoading } = useFetch(getAuth, {
+    onSuccess: (value) => {
+      setIsSignIn(value);
+    },
+  });
 
+  if (isLoading) return null;
   return (
     <ChakraProvider theme={theme}>
       <Box as="main" minWidth="1200px" height="100vh">
@@ -36,8 +41,8 @@ const App: FC = () => {
           {isSignIn ? (
             <AsideLayout>
               <Routes>
-                {SIGN_ROUTES.map(({ Element, path }) => (
-                  <Route element={<Element />} path={path} />
+                {SIGN_ROUTES.map(({ Element, path }, index) => (
+                  <Route key={index} element={<Element />} path={path} />
                 ))}
                 <Route path="*" element={<Navigate replace to="/overview" />} />
               </Routes>

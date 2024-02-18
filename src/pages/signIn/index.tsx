@@ -8,10 +8,10 @@ import {
   InputGroup,
   Text,
 } from "@chakra-ui/react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
 import useUserStore from "@/hooks/store/useUserStore.ts";
 import { deleteCookie, getCookie, setCookie } from "@/utils/cookie.ts";
-import { SAVE_ID } from "@/utils/constant.ts";
+import { ACCESS_TOKEN, SAVE_ID } from "@/utils/constant.ts";
 import type { SignInForm } from "@/utils/types.ts";
 
 const SignIn: FC = () => {
@@ -30,8 +30,9 @@ const SignIn: FC = () => {
     deleteCookie(SAVE_ID);
   };
 
-  const handleSubmitSignInForm = () => {
+  const handleSubmitSignInForm: SubmitHandler<SignInForm> = ({ id, pw }) => {
     setIsSignIn(true);
+    setCookie(ACCESS_TOKEN, id + pw);
   };
 
   return (

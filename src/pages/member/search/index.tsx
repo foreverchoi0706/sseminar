@@ -72,8 +72,8 @@ const Search: FC = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {new Array(20).fill("").map(() => (
-              <Tr>
+            {new Array(20).fill("").map((_, index) => (
+              <Tr key={index}>
                 <Td>테스트</Td>
                 <Td>테스트</Td>
                 <Td>테스트</Td>
