@@ -62,8 +62,18 @@ const Search: FC = () => {
           <Thead>
             <Tr>
               <Th>No.</Th>
-              <Th>참석구분</Th>
-              <Th>등록구분</Th>
+              <Th>
+                <Select backgroundColor="#ffffff">
+                  <option>AAA</option>
+                  <option>BBB</option>
+                </Select>
+              </Th>
+              <Th>
+                <Select backgroundColor="#ffffff">
+                  <option>AAA</option>
+                  <option>BBB</option>
+                </Select>
+              </Th>
               <Th>등록형태</Th>
               <Th>이름</Th>
               <Th>업체명</Th>
@@ -74,7 +84,7 @@ const Search: FC = () => {
           <Tbody>
             {new Array(20).fill("").map((_, index) => (
               <Tr key={index}>
-                <Td>테스트</Td>
+                <Td>{index + 1}</Td>
                 <Td>테스트</Td>
                 <Td>테스트</Td>
                 <Td>테스트</Td>

@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import useUserStore from "@/hooks/store/useUserStore.ts";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ACCESS_TOKEN, SIGN_ROUTES } from "@/utils/constant.ts";
 import { deleteCookie } from "@/utils/cookie.ts";
 
@@ -35,7 +35,19 @@ const AsideLayout: FC<PropsWithChildren> = ({ children }) => {
         <List color="#ffffff">
           {SIGN_ROUTES.map(({ path, name }, index) => (
             <ListItem key={index} paddingY="10px">
-              <Link to={path}>{name}</Link>
+              <NavLink
+                style={({ isActive }) =>
+                  isActive
+                    ? {
+                        textDecoration: "underline",
+                        fontWeight: "700",
+                      }
+                    : undefined
+                }
+                to={path}
+              >
+                {name}
+              </NavLink>
             </ListItem>
           ))}
         </List>
