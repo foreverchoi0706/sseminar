@@ -1,5 +1,7 @@
+import UpsertModal from "@/components/UpsertModal";
 import {
   Box,
+  Button,
   Checkbox,
   CheckboxGroup,
   Grid,
@@ -15,19 +17,24 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import type { FC } from "react";
 
 const Search: FC = () => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   return (
     <Box>
+      <UpsertModal isOpen={isOpen} onClose={onClose} />
       <Grid
         border="1px solid #D9DEE9"
         padding="20px"
         marginY="20px"
         alignItems="center"
         justifyContent="space-around"
-        templateColumns="repeat(3, 1fr)"
+        justifyItems="center"
+        templateColumns="repeat(4, 1fr)"
         gap={6}
       >
         <GridItem>
@@ -54,6 +61,9 @@ const Search: FC = () => {
             </Select>
             <Input />
           </InputGroup>
+        </GridItem>
+        <GridItem>
+          <Button onClick={onOpen}>등록</Button>
         </GridItem>
       </Grid>
       <Box>
