@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 
-const useFetch = <T>(
+const useFetch = <T, U = unknown>(
   apiFunction: () => Promise<T>,
-  options?: { onSuccess: (value: T) => void },
+  options?: { onSuccess?: (value: T) => void; onError?: (reason: U) => void },
 ) => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    apiFunction().then((value) => {
-      setData(value);
-      options?.onSuccess(value);
-      setLoading(false);
-    });
+    apiFunction()
+      .then((value) => {
+        setData(value);
+        if (options?.onSuccess) options?.onSuccess(value);
+        setLoading(false);
+      })
+      .catch((reason: U) => {
+        if (options?.onError) options.onError(reason);
+      });
   }, []);
 
   return {
