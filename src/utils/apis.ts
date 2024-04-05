@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getCookie } from "@/utils/cookie.ts";
-import { ACCESS_TOKEN } from "@/utils/constant.ts";
+import { ACCESS_TOKEN } from "@/utils/constants";
 
 const instance = axios.create({
   baseURL: "",

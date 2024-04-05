@@ -4,7 +4,6 @@ import {
   Form,
   FormProps,
   Input,
-  Checkbox,
   Button,
   Typography,
   Space,
@@ -19,7 +18,7 @@ type FieldType = {
   remember?: string;
 };
 
-const SignIn: FC = () => {
+const SignUp: FC = () => {
   const navigate = useNavigate();
   const setIsSignIn = useUserStore(({ setIsSignIn }) => setIsSignIn);
 
@@ -57,16 +56,21 @@ const SignIn: FC = () => {
         >
           <Input.Password />
         </Form.Item>
-        <Form.Item<FieldType> name="remember" valuePropName="checked">
-          <Checkbox>Remember me</Checkbox>
+        <Form.Item<FieldType>
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+        >
+          <Input.Password />
         </Form.Item>
+
         <Form.Item>
           <Space>
             <Button type="primary" htmlType="submit">
-              로그인
-            </Button>
-            <Button type="default" onClick={() => navigate("/signUp")}>
               회원가입
+            </Button>
+            <Button type="default" onClick={() => navigate(-1)}>
+              뒤로가기
             </Button>
           </Space>
         </Form.Item>
@@ -75,4 +79,4 @@ const SignIn: FC = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

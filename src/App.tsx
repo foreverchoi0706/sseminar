@@ -1,61 +1,104 @@
+import { FC, useState } from "react";
+import { Button, Layout, Menu, Select, Space } from "antd";
 import {
-  Box,
-  ChakraProvider,
-  extendTheme,
-  withDefaultProps,
-} from "@chakra-ui/react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { type FC } from "react";
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import module from "./index.module.css";
+import { SIGN_IN_ROUTES } from "@/utils/constants";
 import SignIn from "@/pages/signIn";
-import AsideLayout from "@/components/AsideLayout.tsx";
 import useUserStore from "@/hooks/store/useUserStore.ts";
-import { SIGN_ROUTES } from "@/utils/constant.ts";
-import "@/global.css";
-import { getAuth } from "@/utils/apis.ts";
-import useFetch from "@/hooks/useFetch.ts";
-
-const theme = extendTheme(
-  withDefaultProps({
-    defaultProps: {
-      colorScheme: "facebook",
-    },
-  }),
-);
+import SignUp from "./pages/signUp";
 
 const App: FC = () => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { isSignIn, setIsSignIn } = useUserStore(
-    ({ isSignIn, setIsSignIn }) => ({ isSignIn, setIsSignIn }),
+    ({ isSignIn, setIsSignIn }) => ({
+      isSignIn,
+      setIsSignIn,
+    })
   );
+  const [selectedKey, setSelectedKey] = useState<string>(
+    SIGN_IN_ROUTES.find(({ path }) => path === pathname)?.key ?? "0"
+  );
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
-  const { isLoading } = useFetch(getAuth, {
-    onSuccess: (value) => {
-      setIsSignIn(value);
-    },
-  });
-
-  if (isLoading) return null;
-  return (
-    <ChakraProvider theme={theme}>
-      <Box as="main" minWidth="1200px" height="100vh">
-        <BrowserRouter>
-          {isSignIn ? (
-            <AsideLayout>
-              <Routes>
-                {SIGN_ROUTES.map(({ Element, path }, index) => (
-                  <Route key={index} element={<Element />} path={path} />
-                ))}
-                <Route path="*" element={<Navigate replace to="/overview" />} />
-              </Routes>
-            </AsideLayout>
-          ) : (
+  if (isSignIn) {
+    return (
+      <Layout className={module.layout}>
+        <Layout.Sider trigger={null} collapsible collapsed={isCollapsed}>
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={[selectedKey]}
+            selectedKeys={[selectedKey]}
+            items={SIGN_IN_ROUTES.map(({ key, Icon, label }) => ({
+              key,
+              icon: <Icon />,
+              label,
+            }))}
+            onSelect={({ key }) => {
+              const route = SIGN_IN_ROUTES.at(+key);
+              if (route) {
+                setSelectedKey(route.key);
+                navigate(route.path);
+              }
+            }}
+          />
+        </Layout.Sider>
+        <Layout>
+          <Layout.Header className={module.header}>
+            <Space size="large">
+              <Button
+                type="text"
+                icon={
+                  isCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
+                }
+                onClick={() => setIsCollapsed(!isCollapsed)}
+              />
+              <Select defaultValue="1">
+                <Select.Option value="1">Sample</Select.Option>
+                <Select.Option value="2">Sample</Select.Option>
+                <Select.Option value="3">Sample</Select.Option>
+                <Select.Option value="4">Sample</Select.Option>
+              </Select>
+            </Space>
+            <Button
+              type="text"
+              icon={<LogoutOutlined />}
+              onClick={() => setIsSignIn(false)}
+            />
+          </Layout.Header>
+          <Layout.Content className={module.content}>
             <Routes>
-              <Route path="/signIn" element={<SignIn />} />
-              <Route path="*" element={<Navigate replace to="/signIn" />} />
+              {SIGN_IN_ROUTES.map(({ Page, path }, index) => (
+                <Route key={index} element={<Page />} path={path} />
+              ))}
+              <Route
+                path="*"
+                element={<Navigate replace to={SIGN_IN_ROUTES[0].path} />}
+              />
             </Routes>
-          )}
-        </BrowserRouter>
-      </Box>
-    </ChakraProvider>
+          </Layout.Content>
+        </Layout>
+      </Layout>
+    );
+  }
+  return (
+    <Routes>
+      <Route path="/signIn" element={<SignIn />} />
+      <Route path="/signUp" element={<SignUp />} />
+      <Route path="*" element={<Navigate replace to="/signIn" />} />
+    </Routes>
   );
 };
 
