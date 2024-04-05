@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 const Search: FC = () => {
-  return null;
+  return "SEARCH";
 };
 
 export default Search;

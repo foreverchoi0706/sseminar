@@ -6,12 +6,10 @@ const useFetch = <T, U = unknown>(
     disabled?: boolean;
     onSuccess?: (value: T) => void;
     onError?: (reason: U) => void;
-  }
+  },
 ) => {
-  const [data, setData] = useState<T | null>(null);
-  const [isLoading, setLoading] = useState<boolean>(
-    options?.disabled ? false : true
-  );
+  const [data, setData] = useState<T>();
+  const [isLoading, setLoading] = useState<boolean>(!options?.disabled);
 
   useEffect(() => {
     if (options?.disabled) return;

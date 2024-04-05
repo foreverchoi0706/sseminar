@@ -1,6 +1,6 @@
 import type { FC } from "react";
 
 const Upload: FC = () => {
-  return null;
+  return "Upload";
 };
 export default Upload;

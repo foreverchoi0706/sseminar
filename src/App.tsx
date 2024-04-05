@@ -18,7 +18,7 @@ import SignIn from "@/pages/signIn";
 import useStore from "@/hooks/useStore";
 import SignUp from "./pages/signUp";
 import useFetch from "./hooks/useFetch";
-import { getAuth } from "./utils/apis";
+import { getAuth, getSeminars } from "./utils/apis";
 import { hasCookie } from "./utils/cookie";
 import useAuth from "./hooks/useAuth";
 
@@ -27,9 +27,10 @@ const Main: FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [selectedKey, setSelectedKey] = useState<string>(
-    SIGN_IN_ROUTES.find(({ path }) => path === pathname)?.key ?? "0"
+    SIGN_IN_ROUTES.find(({ path }) => path === pathname)?.key ?? "0",
   );
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const { data: seminars = [] } = useFetch(getSeminars);
 
   return (
     <Layout className={module.layout}>
@@ -61,11 +62,12 @@ const Main: FC = () => {
               icon={isCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
               onClick={() => setIsCollapsed(!isCollapsed)}
             />
-            <Select defaultValue="1">
-              <Select.Option value="1">Sample</Select.Option>
-              <Select.Option value="2">Sample</Select.Option>
-              <Select.Option value="3">Sample</Select.Option>
-              <Select.Option value="4">Sample</Select.Option>
+            <Select placeholder="세미나 선택">
+              {seminars.map(({ seminarId, seminarName }) => (
+                <Select.Option key={seminarId} value={String(seminarId)}>
+                  {seminarName}
+                </Select.Option>
+              ))}
             </Select>
           </Space>
           <Button type="text" icon={<LogoutOutlined />} onClick={signOut} />
