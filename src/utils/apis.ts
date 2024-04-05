@@ -10,14 +10,13 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(
-  (value) => {
-    return value;
-  },
-  () => {},
+  (value) => value,
+  () => {}
 );
 
 export const getAuth = () => {
+  console.log("getAuth");
   return new Promise<boolean>((resolve) => {
-    resolve(true);
+    setTimeout(() => resolve(true), 500);
   });
 };

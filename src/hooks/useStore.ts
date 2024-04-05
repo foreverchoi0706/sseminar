@@ -5,9 +5,9 @@ interface UserStore {
   setIsSignIn: (isSignIn: boolean) => void;
 }
 
-const useUserStore = create<UserStore>((set) => ({
+const useStore = create<UserStore>((set) => ({
   isSignIn: false,
   setIsSignIn: (isSignIn) => set(() => ({ isSignIn })),
 }));
 
-export default useUserStore;
+export default useStore;

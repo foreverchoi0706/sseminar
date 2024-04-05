@@ -1,4 +1,4 @@
-import useUserStore from "@/hooks/store/useUserStore";
+import useStore from "@/hooks/useStore";
 import {
   Layout,
   Form,
@@ -20,7 +20,7 @@ type FieldType = {
 
 const SignUp: FC = () => {
   const navigate = useNavigate();
-  const setIsSignIn = useUserStore(({ setIsSignIn }) => setIsSignIn);
+  const setIsSignIn = useStore(({ setIsSignIn }) => setIsSignIn);
 
   const onFinish: FormProps<FieldType>["onFinish"] = () => {
     setIsSignIn(true);

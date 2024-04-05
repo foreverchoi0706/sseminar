@@ -1,4 +1,3 @@
-import useUserStore from "@/hooks/store/useUserStore";
 import {
   Layout,
   Form,
@@ -12,26 +11,25 @@ import {
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import module from "./index.module.css";
+import useAuth from "@/hooks/useAuth";
 
 type FieldType = {
-  username?: string;
-  password?: string;
-  remember?: string;
+  username: string;
+  password: string;
+  remember: string;
 };
 
 const SignIn: FC = () => {
+  const { signIn } = useAuth();
   const navigate = useNavigate();
-  const setIsSignIn = useUserStore(({ setIsSignIn }) => setIsSignIn);
 
-  const onFinish: FormProps<FieldType>["onFinish"] = () => {
-    setIsSignIn(true);
+  const onFinish: FormProps<FieldType>["onFinish"] = ({
+    username,
+    password,
+  }) => {
+    signIn(username + password);
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-  };
   return (
     <Layout className={module.layout}>
       <Typography.Title>쎄미나 어드민</Typography.Title>
@@ -40,7 +38,6 @@ const SignIn: FC = () => {
         style={{ maxWidth: 600 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item<FieldType>
