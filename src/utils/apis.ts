@@ -4,12 +4,16 @@ import { ACCESS_TOKEN } from "@/utils/constants";
 import { Response, Seminar } from "@/utils/types.ts";
 
 const axiosInstance = axios.create({
-  baseURL: "api",
+  baseURL:
+    import.meta.env.MODE === "development"
+      ? "api"
+      : "https://biz-dev-api.sseminar.com/api",
   headers: {
     Authorization: getCookie(ACCESS_TOKEN),
   },
 });
 
+console.log();
 axiosInstance.interceptors.request.use(
   (value) => value,
   () => {},
