@@ -15,21 +15,22 @@ import {
 import module from "./index.module.css";
 import { ACCESS_TOKEN, SIGN_IN_ROUTES } from "@/utils/constants";
 import SignIn from "@/pages/signIn";
+import SignUp from "@/pages/signUp";
+import useFetch from "@/hooks/useFetch";
+import { getAuth, getSeminars } from "@/utils/apis";
+import { hasCookie } from "@/utils/cookie";
+import useAuth from "@/hooks/useAuth";
 import useStore from "@/hooks/useStore";
-import SignUp from "./pages/signUp";
-import useFetch from "./hooks/useFetch";
-import { getAuth, getSeminars } from "./utils/apis";
-import { hasCookie } from "./utils/cookie";
-import useAuth from "./hooks/useAuth";
 
 const Main: FC = () => {
   const { signOut } = useAuth();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [selectedKey, setSelectedKey] = useState<string>(
-    SIGN_IN_ROUTES.find(({ path }) => path === pathname)?.key ?? "0",
+    SIGN_IN_ROUTES.find(({ path }) => path === pathname)?.key ?? "0"
   );
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const setSeminarId = useStore(({ setSeminarId }) => setSeminarId);
   const { data: seminars = [] } = useFetch(getSeminars);
 
   return (
@@ -62,9 +63,12 @@ const Main: FC = () => {
               icon={isCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
               onClick={() => setIsCollapsed(!isCollapsed)}
             />
-            <Select placeholder="세미나 선택">
+            <Select
+              placeholder="세미나 선택"
+              onSelect={(seminarId) => setSeminarId(seminarId)}
+            >
               {seminars.map(({ seminarId, seminarName }) => (
-                <Select.Option key={seminarId} value={String(seminarId)}>
+                <Select.Option key={seminarId} value={seminarId}>
                   {seminarName}
                 </Select.Option>
               ))}
